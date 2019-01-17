@@ -11,7 +11,7 @@ namespace Surveys
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new SurveysView());
         }
 
         protected override void OnStart()
