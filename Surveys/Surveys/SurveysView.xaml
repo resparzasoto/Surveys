@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:core="clr-namespace:Surveys.Core"
+             xmlns:surveys="clr-namespace:Surveys"
              x:Class="Surveys.SurveysView"
              Title="Encuestas">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <core:Data x:Key="data" />
+            <surveys:Data x:Key="data" />
 
-            <core:TeamColorConverter x:Key="PlayeraConverter" />
+            <surveys:TeamColorConverter x:Key="PlayeraConverter" />
 
             <DataTemplate x:Key="SurveyDataTemplate">
                 <ViewCell>
@@ -32,7 +32,7 @@
         </Grid.RowDefinitions>
 
         <Button Text="+"
-                Clicked="AddSurveyButton_Clicked" />
+                Command="{Binding NewSurveyCommand}" />
 
         <ListView ItemsSource="{Binding Surveys}"
                   SelectedItem="{Binding SelectedSurvey, Mode=TwoWay}"
