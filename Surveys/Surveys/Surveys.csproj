@@ -14,11 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="SurveyDetailsView.xaml">
+    <EmbeddedResource Update="Views\SurveyDetailsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="SurveysView.xaml">
+    <EmbeddedResource Update="Views\SurveysView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
 </Project>

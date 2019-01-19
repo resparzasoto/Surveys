@@ -2,9 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Surveys.SurveyDetailsView"
+             xmlns:viewModels="clr-namespace:Surveys.ViewModels"
              Title="Nueva Encuesta">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <viewModels:SurveyDetailsViewModel x:Key="SurveyDetailsViewModel" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-    <Grid Margin="10" >
+    <Grid Margin="10" 
+          BindingContext="{StaticResource SurveyDetailsViewModel}" >
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
@@ -12,10 +19,10 @@
 
         <StackLayout>
             <Label Text="Nombre" />
-            <Entry x:Name="NameEntry" />
+            <Entry Text="{Binding Name, Mode=TwoWay}" />
 
             <Label Text="Fecha de nacimiento" />
-            <DatePicker x:Name="BirthDatePicker" />
+            <DatePicker Date="{Binding BirthDate, Mode=TwoWay}" />
 
             <Label Text="Equipo favorito" />
 
@@ -25,15 +32,15 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Label x:Name="FavoriteTeamLabel" />
+                <Label Text="{Binding FavoriteTeam}" />
                 <Button Grid.Column="1"
                         Text="..."
-                        Clicked="FavoriteTeamButton_Clicked" />
+                        Command="{Binding SelectTeamCommand}" />
             </Grid>
         </StackLayout>
 
         <Button Text="Aceptar"
                 Grid.Row="1"
-                Clicked="OkButton_Clicked" />
+                Command="{Binding EndSurveyCommand}" />
     </Grid>
 </ContentPage>

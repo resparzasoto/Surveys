@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Surveys.ViewModels;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Surveys
 {
-    public class Data : NotificationObject
+    public class SurveysViewModel : NotificationObject
     {
         private ObservableCollection<Survey> surveys;
 
@@ -41,12 +42,13 @@ namespace Surveys
 
         public ICommand NewSurveyCommand { get; set; }
 
-        public Data()
+        public SurveysViewModel()
         {
             NewSurveyCommand = new Command(NewSurveyCommandExecute);
 
             Surveys = new ObservableCollection<Survey>();
-            MessagingCenter.Subscribe<ContentPage, Survey>(this, Messages.NewSurveyComplete, (sender, args) =>
+
+            MessagingCenter.Subscribe<SurveyDetailsViewModel, Survey>(this, Messages.NewSurveyComplete, (sender, args) =>
             {
                 Surveys.Add(args);
             });

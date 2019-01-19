@@ -6,7 +6,7 @@
              Title="Encuestas">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <surveys:Data x:Key="data" />
+            <surveys:SurveysViewModel x:Key="SurveysViewModel" />
 
             <surveys:TeamColorConverter x:Key="PlayeraConverter" />
 
@@ -23,8 +23,8 @@
             </DataTemplate>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <Grid BindingContext="{StaticResource data}"
+
+    <Grid BindingContext="{StaticResource SurveysViewModel}"
           Margin="10" >
         <Grid.RowDefinitions >
             <RowDefinition Height="Auto" />
