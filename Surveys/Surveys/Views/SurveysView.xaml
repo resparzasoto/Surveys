@@ -8,7 +8,7 @@
         <ResourceDictionary>
             <surveys:SurveysViewModel x:Key="SurveysViewModel" />
 
-            <surveys:TeamColorConverter x:Key="PlayeraConverter" />
+            <surveys:TeamColorConverter x:Key="TeamColorConverter" />
 
             <DataTemplate x:Key="SurveyDataTemplate">
                 <ViewCell>
@@ -17,7 +17,12 @@
                                FontSize="24" />
                         <Label Text="{Binding Birthdate, StringFormat='{}{0:dd/MM/yyyy}'}" />
                         <Label Text="{Binding FavoriteTeam}"
-                               TextColor="{Binding FavoriteTeam, Converter={StaticResource PlayeraConverter}}" />
+                               TextColor="{Binding FavoriteTeam, Converter={StaticResource TeamColorConverter}}" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Lat, StringFormat='{}{0:N4}'}" />
+                        <Label Text="," />
+                        <Label Text="{Binding Lon, StringFormat='{}{0:N4}'}" />
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>

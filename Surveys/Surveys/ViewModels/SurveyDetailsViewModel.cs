@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Surveys.ServiceInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -111,7 +112,7 @@ namespace Surveys.ViewModels
             }
         }
 
-        private void EndSurveyCommandExecute()
+        private async void EndSurveyCommandExecute()
         {
             var newSurvey = new Survey()
             {
@@ -119,6 +120,23 @@ namespace Surveys.ViewModels
                 Birthdate = BirthDate,
                 FavoriteTeam = FavoriteTeam
             };
+
+            var geolocationService = DependencyService.Get<IGeolocationService>();
+
+            if (geolocationService != null)
+            {
+                try
+                {
+                    var currentLocation = await geolocationService.GetCurrentLocationAsync();
+                    newSurvey.Lat = currentLocation.Item1;
+                    newSurvey.Lon = currentLocation.Item2;
+                }
+                catch (Exception)
+                {
+                    newSurvey.Lat = 0;
+                    newSurvey.Lon = 0;
+                }
+            }
 
             MessagingCenter.Send(this, Messages.NewSurveyComplete, newSurvey);
         }
