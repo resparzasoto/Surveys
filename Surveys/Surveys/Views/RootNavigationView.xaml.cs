@@ -1,14 +1,14 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Surveys
+namespace Surveys.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class SurveysView : ContentPage
+	public partial class RootNavigationView : NavigationPage
 	{
-		public SurveysView ()
+		public RootNavigationView ()
 		{
             InitializeComponent();
 		}
-    }
+	}
 }

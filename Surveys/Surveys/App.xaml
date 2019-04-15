@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Surveys.App">
-    <Application.Resources>
-
-    </Application.Resources>
-</Application>
+<unity:PrismApplication
+                        xmlns:unity="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms" 
+                        xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        x:Class="Surveys.App">
+    <unity:PrismApplication.Resources>
+        <ResourceDictionary>
+            <!--Recursos globales de la aplicación-->
+        </ResourceDictionary>
+    </unity:PrismApplication.Resources>
+</unity:PrismApplication>

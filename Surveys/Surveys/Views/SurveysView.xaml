@@ -6,8 +6,6 @@
              Title="Encuestas">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <surveys:SurveysViewModel x:Key="SurveysViewModel" />
-
             <surveys:TeamColorConverter x:Key="TeamColorConverter" />
 
             <DataTemplate x:Key="SurveyDataTemplate">
@@ -18,32 +16,33 @@
                         <Label Text="{Binding Birthdate, StringFormat='{}{0:dd/MM/yyyy}'}" />
                         <Label Text="{Binding FavoriteTeam}"
                                TextColor="{Binding FavoriteTeam, Converter={StaticResource TeamColorConverter}}" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Lat, StringFormat='{}{0:N4}'}" />
-                        <Label Text="," />
-                        <Label Text="{Binding Lon, StringFormat='{}{0:N4}'}" />
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Lat, StringFormat='{}{0:N4}'}" />
+                            <Label Text="," />
+                            <Label Text="{Binding Lon, StringFormat='{}{0:N4}'}" />
+                        </StackLayout>
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid BindingContext="{StaticResource SurveysViewModel}"
-          Margin="10" >
-        <Grid.RowDefinitions >
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <Button Text="+"
-                Command="{Binding NewSurveyCommand}" />
-
+    <Grid Margin="10">
         <ListView ItemsSource="{Binding Surveys}"
                   SelectedItem="{Binding SelectedSurvey, Mode=TwoWay}"
                   ItemTemplate="{StaticResource SurveyDataTemplate}"
-                  Grid.Row="1"
-                  Margin="10"
                   HasUnevenRows="True" />
     </Grid>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Nueva"
+                     Command="{Binding NewSurveyCommand}" >
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource"
+                            Android="nuevacaptura.png"
+                            iOS="nuevacaptura.png"
+                            WinPhone="assets/nuevacaptura.png"/>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
 </ContentPage>

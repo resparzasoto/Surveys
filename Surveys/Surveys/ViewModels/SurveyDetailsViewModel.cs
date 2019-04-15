@@ -1,16 +1,22 @@
-﻿using Surveys.ServiceInterfaces;
+﻿using Prism.Commands;
+using Prism.Navigation;
+using Prism.Services;
+using Surveys.Models;
+using Surveys.ServiceInterfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace Surveys.ViewModels
 {
-    public class SurveyDetailsViewModel : NotificationObject
+    public class SurveyDetailsViewModel : ViewModelBase
     {
+        INavigationService navigationService = null;
+
+        IPageDialogService pageDialogService = null;
+
+        #region Propiedades
         private string name;
 
         public string Name
@@ -23,7 +29,7 @@ namespace Surveys.ViewModels
                     return;
                 }
                 name = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -39,7 +45,7 @@ namespace Surveys.ViewModels
                     return;
                 }
                 birthDate = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -55,7 +61,7 @@ namespace Surveys.ViewModels
                     return;
                 }
                 favoriteTeam = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -71,18 +77,20 @@ namespace Surveys.ViewModels
                     return;
                 }
                 teams = value;
+                RaisePropertyChanged();
             }
         }
+        #endregion
 
         public ICommand SelectTeamCommand { get; set; }
 
         public ICommand EndSurveyCommand { get; set; }
 
-        public SurveyDetailsViewModel()
+        public SurveyDetailsViewModel(INavigationService navigationService, IPageDialogService pageDialogService)
         {
-            SelectTeamCommand = new Command(SelectTeamCommandExecute);
+            this.navigationService = navigationService;
 
-            EndSurveyCommand = new Command(EndSurveyCommandExecute, EndSurveyCommandCanExecute);
+            this.pageDialogService = pageDialogService;
 
             Teams = new ObservableCollection<string>(new[]
             {
@@ -96,20 +104,18 @@ namespace Surveys.ViewModels
                 "Saprissa"
             });
 
-            MessagingCenter.Subscribe<ContentPage, string>(this, Messages.TeamSelected, (sender, args) =>
-            {
-                FavoriteTeam = args;
-            });
+            SelectTeamCommand = new DelegateCommand(SelectTeamCommandExecute);
 
-            PropertyChanged += SurveyDetailsViewModel_PropertyChanged;
+            EndSurveyCommand = new DelegateCommand(EndSurveyCommandExecute, EndSurveyCommandCanExecute)
+                .ObservesProperty(() => Name)
+                .ObservesProperty(() => FavoriteTeam)
+                .ObservesProperty(() => BirthDate);
         }
 
-        private void SurveyDetailsViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private async void SelectTeamCommandExecute()
         {
-            if (e.PropertyName == nameof(Name) || e.PropertyName == nameof(FavoriteTeam) || e.PropertyName == nameof(BirthDate))
-            {
-                (EndSurveyCommand as Command)?.ChangeCanExecute();
-            }
+            var team = await pageDialogService.DisplayActionSheetAsync(Literals.FavoriteTeamTitle, null, null, Teams.ToArray());
+            FavoriteTeam = team;
         }
 
         private async void EndSurveyCommandExecute()
@@ -121,7 +127,7 @@ namespace Surveys.ViewModels
                 FavoriteTeam = FavoriteTeam
             };
 
-            var geolocationService = DependencyService.Get<IGeolocationService>();
+            var geolocationService = Xamarin.Forms.DependencyService.Get<IGeolocationService>();
 
             if (geolocationService != null)
             {
@@ -138,17 +144,12 @@ namespace Surveys.ViewModels
                 }
             }
 
-            MessagingCenter.Send(this, Messages.NewSurveyComplete, newSurvey);
+            await navigationService.GoBackAsync(new NavigationParameters { { Messages.NewSurvey, newSurvey } });
         }
 
         private bool EndSurveyCommandCanExecute()
         {
             return ((!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(FavoriteTeam)) && (BirthDate != default(DateTime) && BirthDate != Convert.ToDateTime("01/01/1900")));
-        }
-
-        private void SelectTeamCommandExecute()
-        {
-            MessagingCenter.Send(this, Messages.SelectTeam, Teams.ToArray());
         }
     }
 }

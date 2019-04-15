@@ -1,13 +1,16 @@
-﻿using Surveys.ViewModels;
-using System;
+﻿using Prism.Commands;
+using Prism.Navigation;
+using Surveys.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Xamarin.Forms;
 
-namespace Surveys
+namespace Surveys.ViewModels
 {
-    public class SurveysViewModel : NotificationObject
+    public class SurveysViewModel : ViewModelBase
     {
+        private INavigationService navigationService = null;
+
+        #region Propiedades
         private ObservableCollection<Survey> surveys;
 
         public ObservableCollection<Survey> Surveys
@@ -20,7 +23,7 @@ namespace Surveys
                     return;
                 }
                 surveys = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -36,27 +39,35 @@ namespace Surveys
                     return;
                 }
                 selectedSurvey = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
+        #endregion
 
         public ICommand NewSurveyCommand { get; set; }
 
-        public SurveysViewModel()
+        public SurveysViewModel(INavigationService navigationService)
         {
-            NewSurveyCommand = new Command(NewSurveyCommandExecute);
+            this.navigationService = navigationService;
 
             Surveys = new ObservableCollection<Survey>();
 
-            MessagingCenter.Subscribe<SurveyDetailsViewModel, Survey>(this, Messages.NewSurveyComplete, (sender, args) =>
-            {
-                Surveys.Add(args);
-            });
+            NewSurveyCommand = new DelegateCommand(NewSurveyCommandExecute);
         }
 
-        private void NewSurveyCommandExecute()
+        private async void NewSurveyCommandExecute()
         {
-            MessagingCenter.Send(this, Messages.NewSurvey);
+            await navigationService.NavigateAsync($"{nameof(SurveyDetailsView)}");
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            if (parameters.ContainsKey(Messages.NewSurvey))
+            {
+                Surveys.Add(parameters[Messages.NewSurvey] as Survey);
+            }
         }
     }
 }

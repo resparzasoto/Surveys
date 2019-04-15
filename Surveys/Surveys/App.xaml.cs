@@ -1,32 +1,29 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Prism.Ioc;
+using Prism.Unity;
+using Surveys.ViewModels;
+using Surveys.Views;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Surveys
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
-        public App()
+        protected override async void OnInitialized()
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new SurveysView());
+            await NavigationService.NavigateAsync($"{nameof(LoginView)}");
         }
 
-        protected override void OnStart()
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Handle when your app starts
-        }
-
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
+            containerRegistry.RegisterForNavigation<RootNavigationView>();
+            containerRegistry.RegisterForNavigation<SurveysView, SurveysViewModel>();
+            containerRegistry.RegisterForNavigation<SurveyDetailsView, SurveyDetailsViewModel>();
+            containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
+            containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
+            containerRegistry.RegisterForNavigation<AboutView, AboutViewModel>();
         }
     }
 }

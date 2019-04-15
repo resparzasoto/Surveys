@@ -2,21 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Surveys.SurveyDetailsView"
-             xmlns:viewModels="clr-namespace:Surveys.ViewModels"
              Title="Nueva Encuesta">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <viewModels:SurveyDetailsViewModel x:Key="SurveyDetailsViewModel" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
-    <Grid Margin="10" 
-          BindingContext="{StaticResource SurveyDetailsViewModel}" >
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
+    <Grid Margin="10">
         <StackLayout>
             <Label Text="Nombre" />
             <Entry Text="{Binding Name, Mode=TwoWay}" />
@@ -25,7 +12,6 @@
             <DatePicker Date="{Binding BirthDate, Mode=TwoWay}" />
 
             <Label Text="Equipo favorito" />
-
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -38,9 +24,17 @@
                         Command="{Binding SelectTeamCommand}" />
             </Grid>
         </StackLayout>
-
-        <Button Text="Aceptar"
-                Grid.Row="1"
-                Command="{Binding EndSurveyCommand}" />
     </Grid>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Aceptar"
+                     Command="{Binding EndSurveyCommand}" >
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource"
+                            Android="ok.png" 
+                            iOS="ok.png"
+                            WinPhone="assets/ok.png" />
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
 </ContentPage>
