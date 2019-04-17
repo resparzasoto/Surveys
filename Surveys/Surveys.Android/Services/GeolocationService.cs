@@ -4,9 +4,8 @@ using Android.Content;
 using Android.Locations;
 using Surveys.Droid.Services;
 using Surveys.ServiceInterfaces;
-using Xamarin.Forms;
 
-[assembly: Dependency(typeof(GeolocationService))]
+[assembly: Xamarin.Forms.Dependency(typeof(GeolocationService))]
 
 namespace Surveys.Droid.Services
 {
@@ -17,7 +16,7 @@ namespace Surveys.Droid.Services
 
         public GeolocationService()
         {
-            locationManager = Forms.Context.GetSystemService(Context.LocationService) as LocationManager;
+            locationManager = Xamarin.Forms.Forms.Context.GetSystemService(Context.LocationService) as LocationManager;
         }
 
         public Task<Tuple<double, double>> GetCurrentLocationAsync()

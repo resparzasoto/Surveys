@@ -1,5 +1,7 @@
 ﻿using Prism.Ioc;
 using Prism.Unity;
+using Surveys.ServiceInterfaces;
+using Surveys.Services;
 using Surveys.ViewModels;
 using Surveys.Views;
 using Xamarin.Forms.Xaml;
@@ -24,6 +26,8 @@ namespace Surveys
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
             containerRegistry.RegisterForNavigation<AboutView, AboutViewModel>();
+
+            containerRegistry.RegisterInstance<ILocalDbService>(new LocalDbService());
         }
     }
 }

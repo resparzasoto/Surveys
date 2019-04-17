@@ -12,9 +12,11 @@ namespace Surveys.ViewModels
 {
     public class SurveyDetailsViewModel : ViewModelBase
     {
-        INavigationService navigationService = null;
+        private INavigationService navigationService = null;
 
-        IPageDialogService pageDialogService = null;
+        private IPageDialogService pageDialogService = null;
+
+        private ILocalDbService localDbService = null;
 
         #region Propiedades
         private string name;
@@ -86,11 +88,11 @@ namespace Surveys.ViewModels
 
         public ICommand EndSurveyCommand { get; set; }
 
-        public SurveyDetailsViewModel(INavigationService navigationService, IPageDialogService pageDialogService)
+        public SurveyDetailsViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ILocalDbService localDbService)
         {
             this.navigationService = navigationService;
-
             this.pageDialogService = pageDialogService;
+            this.localDbService = localDbService;
 
             Teams = new ObservableCollection<string>(new[]
             {
@@ -122,6 +124,7 @@ namespace Surveys.ViewModels
         {
             var newSurvey = new Survey()
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = Name,
                 Birthdate = BirthDate,
                 FavoriteTeam = FavoriteTeam
@@ -144,7 +147,9 @@ namespace Surveys.ViewModels
                 }
             }
 
-            await navigationService.GoBackAsync(new NavigationParameters { { Messages.NewSurvey, newSurvey } });
+            await localDbService.InsertSurveyAsync(newSurvey);
+
+            await navigationService.GoBackAsync();
         }
 
         private bool EndSurveyCommandCanExecute()

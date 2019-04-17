@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Surveys
+﻿namespace Surveys
 {
     public class Literals
     {
         public const string FavoriteTeamTitle = "Selección de equipo";
+
+        public const string DeleteSurveyTitle = "Borrar";
+
+        public const string DeleteSurveyConfirmation = "¿Está seguro(a)?";
+
+        public const string Ok = "Aceptar";
+
+        public const string Cancel = "Cancelar";
     }
 }
