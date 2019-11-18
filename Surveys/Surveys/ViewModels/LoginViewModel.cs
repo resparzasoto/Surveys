@@ -1,6 +1,9 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
+using Prism.Services;
+using Surveys.ServiceInterfaces;
 using Surveys.Views;
+using System;
 using System.Windows.Input;
 
 namespace Surveys.ViewModels
@@ -9,7 +12,27 @@ namespace Surveys.ViewModels
     {
         private INavigationService navigationService = null;
 
+        private IWebApiService webApiService = null;
+
+        private IPageDialogService pageDialogService = null;
+
         #region Propiedades
+        private bool isBusy;
+
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set
+            {
+                if (isBusy == value)
+                {
+                    return;
+                }
+                isBusy = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private string username;
 
         public string Username
@@ -45,9 +68,11 @@ namespace Surveys.ViewModels
 
         public ICommand LoginCommand { get; set; }
 
-        public LoginViewModel(INavigationService navigationService)
+        public LoginViewModel(INavigationService navigationService, IWebApiService webApiService, IPageDialogService pageDialogService)
         {
             this.navigationService = navigationService;
+            this.webApiService = webApiService;
+            this.pageDialogService = pageDialogService;
 
             LoginCommand = new DelegateCommand(LoginCommandExecute, LoginCommandCanExecute)
                 .ObservesProperty(() => Username)
@@ -56,7 +81,27 @@ namespace Surveys.ViewModels
 
         private async void LoginCommandExecute()
         {
-            await navigationService.NavigateAsync($"{nameof(MainView)}/{nameof(RootNavigationView)}/{nameof(SurveysView)}");
+            IsBusy = true;
+
+            try
+            {
+                var loginResult = await webApiService.LoginAsync(Username, Password);
+
+                if (loginResult)
+                {
+                    await navigationService.NavigateAsync($"app:///{nameof(MainView)}/{nameof(RootNavigationView)}/{nameof(SurveysView)}");
+                }
+                else
+                {
+                    await pageDialogService.DisplayAlertAsync(Literals.LoginTitle, Literals.AccessDenied, Literals.Ok);
+                }
+            }
+            catch (Exception e)
+            {
+                await pageDialogService.DisplayAlertAsync(Literals.LoginTitle, e.Message, Literals.Ok);
+            }
+
+            IsBusy = false;
         }
 
         private bool LoginCommandCanExecute()

@@ -57,6 +57,13 @@ namespace Surveys.ViewModels
                 },
                 new Module()
                 {
+                    Icon = Device.RuntimePlatform == Device.UWP ? "assets/sync.png" : "sync.png",
+                    Title = "Sincronización",
+                    LoadModuleCommand = new DelegateCommand(
+                        async () => await navigationService.NavigateAsync($"{nameof(RootNavigationView)}/{nameof(SyncView)}"))
+                },
+                new Module()
+                {
                     Icon = Device.RuntimePlatform == Device.UWP ? "assets/about.png" : "about.png",
                     Title = "Acerca de...",
                     LoadModuleCommand = new DelegateCommand(

@@ -26,8 +26,11 @@ namespace Surveys
             containerRegistry.RegisterForNavigation<LoginView, LoginViewModel>();
             containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
             containerRegistry.RegisterForNavigation<AboutView, AboutViewModel>();
+            containerRegistry.RegisterForNavigation<SyncView, SyncViewModel>();
+            containerRegistry.RegisterForNavigation<TeamSelectionView, TeamSelectionViewModel>();
 
             containerRegistry.RegisterInstance<ILocalDbService>(new LocalDbService());
+            containerRegistry.RegisterInstance<IWebApiService>(new WebApiService());
         }
     }
 }

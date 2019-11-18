@@ -1,0 +1,35 @@
+﻿using Surveys.Web.DAL.SqlServer;
+using Surveys.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Http;
+
+namespace Surveys.Web.Controllers
+{
+    public class SurveysController : ApiController
+    {
+        private readonly SurveysProvider surveysProvider = new SurveysProvider();
+
+        [Authorize]
+        public async Task<IEnumerable<Survey>> Get()
+        {
+            var allSurveys = await surveysProvider.GetAllSurveysAsync();
+
+            return allSurveys;
+        }
+
+        [Authorize]
+        public async Task Post([FromBody] IEnumerable<Survey> surveys)
+        {
+            if (surveys == null)
+            {
+                return;
+            }
+
+            foreach (var survey in surveys)
+            {
+                await surveysProvider.InsertSurveyAsync(survey);
+            }
+        }
+    }
+}

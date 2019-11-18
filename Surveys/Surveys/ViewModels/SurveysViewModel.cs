@@ -1,10 +1,10 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using Surveys.Models;
+using Surveys.Entities;
 using Surveys.ServiceInterfaces;
-using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -19,9 +19,9 @@ namespace Surveys.ViewModels
         private ILocalDbService localDbService = null;
 
         #region Propiedades
-        private ObservableCollection<Survey> surveys;
+        private ObservableCollection<SurveyViewModel> surveys;
 
-        public ObservableCollection<Survey> Surveys
+        public ObservableCollection<SurveyViewModel> Surveys
         {
             get { return surveys; }
             set
@@ -35,9 +35,9 @@ namespace Surveys.ViewModels
             }
         }
 
-        private Survey selectedSurvey;
+        private SurveyViewModel selectedSurvey;
 
-        public Survey SelectedSurvey
+        public SurveyViewModel SelectedSurvey
         {
             get { return selectedSurvey; }
             set
@@ -70,7 +70,7 @@ namespace Surveys.ViewModels
             this.localDbService = localDbService;
             this.pageDialogService = pageDialogService;
 
-            Surveys = new ObservableCollection<Survey>();
+            Surveys = new ObservableCollection<SurveyViewModel>();
 
             NewSurveyCommand = new DelegateCommand(NewSurveyCommandExecute);
 
@@ -98,7 +98,7 @@ namespace Surveys.ViewModels
 
             if (result)
             {
-                await localDbService.DeleteSurveyAsync(SelectedSurvey);
+                await localDbService.DeleteSurveyAsync(SurveyViewModel.GetEntityFromViewModel(SelectedSurvey));
 
                 await LoadSurveysAsync();
             }
@@ -118,11 +118,13 @@ namespace Surveys.ViewModels
 
         private async Task LoadSurveysAsync()
         {
+            var allTeams = await localDbService.GetAllTeamsAsync();
+
             var allSurveys = await localDbService.GetAllSurveysAsync();
 
             if (allSurveys != null)
             {
-                Surveys = new ObservableCollection<Survey>(allSurveys);
+                Surveys = new ObservableCollection<SurveyViewModel>(allSurveys.Select(s => SurveyViewModel.GetViewModelFromEntity(s, allTeams)));
             }
             RaisePropertyChanged(nameof(IsEmpty));
         }
