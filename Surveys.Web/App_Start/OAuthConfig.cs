@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace Surveys.Web.App_Start
 {
-    public class OAuthConfig
+    public static class OAuthConfig
     {
         public static string PublicClientId { get; }
 

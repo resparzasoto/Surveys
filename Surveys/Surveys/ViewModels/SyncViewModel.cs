@@ -10,9 +10,9 @@ namespace Surveys.ViewModels
 {
     public class SyncViewModel : ViewModelBase
     {
-        private IWebApiService webApiService = null;
+        private readonly IWebApiService webApiService = null;
 
-        private ILocalDbService localDbService = null;
+        private readonly ILocalDbService localDbService = null;
 
         private string status;
 

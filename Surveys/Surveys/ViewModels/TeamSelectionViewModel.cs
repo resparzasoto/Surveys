@@ -7,9 +7,9 @@ namespace Surveys.ViewModels
 {
     public class TeamSelectionViewModel : ViewModelBase
     {
-        private INavigationService navigationService = null;
+        private readonly INavigationService navigationService = null;
 
-        private ILocalDbService localDbService = null;
+        private readonly ILocalDbService localDbService = null;
 
         private ObservableCollection<TeamViewModel> teams;
 
@@ -51,11 +51,11 @@ namespace Surveys.ViewModels
             PropertyChanged += TeamSelectionViewModel_PropertyChangedAsync;
         }
 
-        public override async void OnNavigatingTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            base.OnNavigatingTo(parameters);
+            base.OnNavigatedTo(parameters);
 
-            var allTeams = await localDbService.GetAllTeamsAsync();
+            var allTeams = await this.localDbService.GetAllTeamsAsync();
 
             if (allTeams != null)
             {

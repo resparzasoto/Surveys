@@ -1,7 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
-using Surveys.Entities;
 using Surveys.ServiceInterfaces;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,11 +11,11 @@ namespace Surveys.ViewModels
 {
     public class SurveysViewModel : ViewModelBase
     {
-        private INavigationService navigationService = null;
+        private readonly INavigationService navigationService = null;
 
-        private IPageDialogService pageDialogService = null;
+        private readonly IPageDialogService pageDialogService = null;
 
-        private ILocalDbService localDbService = null;
+        private readonly ILocalDbService localDbService = null;
 
         #region Propiedades
         private ObservableCollection<SurveyViewModel> surveys;
@@ -55,7 +54,7 @@ namespace Surveys.ViewModels
         {
             get
             {
-                return Surveys == null || !(Surveys.Count > 0);
+                return Surveys == null || (Surveys.Count <= 0);
             }
         }
         #endregion

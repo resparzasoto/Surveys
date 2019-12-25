@@ -13,11 +13,11 @@ namespace Surveys.ViewModels
 {
     public class SurveyDetailsViewModel : ViewModelBase
     {
-        private INavigationService navigationService = null;
+        private readonly INavigationService navigationService = null;
 
-        private IPageDialogService pageDialogService = null;
+        private readonly IPageDialogService pageDialogService = null;
 
-        private ILocalDbService localDbService = null;
+        private readonly ILocalDbService localDbService = null;
 
         private IEnumerable<Team> localDbTeams = null;
 
@@ -126,7 +126,7 @@ namespace Surveys.ViewModels
 
         private bool EndSurveyCommandCanExecute()
         {
-            return ((!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(FavoriteTeam)) && (BirthDate != default(DateTime) && BirthDate != Convert.ToDateTime("01/01/1900")));
+            return ((!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(FavoriteTeam)) && (BirthDate != default && BirthDate != Convert.ToDateTime("01/01/1900")));
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)

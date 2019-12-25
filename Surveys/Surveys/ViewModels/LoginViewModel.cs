@@ -10,11 +10,11 @@ namespace Surveys.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
-        private INavigationService navigationService = null;
+        private readonly INavigationService navigationService = null;
 
-        private IWebApiService webApiService = null;
+        private readonly IWebApiService webApiService = null;
 
-        private IPageDialogService pageDialogService = null;
+        private readonly IPageDialogService pageDialogService = null;
 
         #region Propiedades
         private bool isBusy;

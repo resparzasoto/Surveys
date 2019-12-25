@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Xamarin.Forms;
 
 namespace Surveys.Droid
 {

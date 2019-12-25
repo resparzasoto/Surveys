@@ -12,7 +12,7 @@
 
         public const string Cancel = "Cancelar";
 
-        public const string WebApiServiceBaseAddress = @"http://192.168.0.9/wsrestsurveys/";
+        public const string WebApiServiceBaseAddress = @"http://192.168.0.10/wsrestsurveys/";
 
         public const string LoginTitle = "Acceso";
 
